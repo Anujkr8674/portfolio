@@ -99,24 +99,25 @@ const SkillCard = ({ skill, desc, colorClass, Icon }: any) => {
   return (
     <div className="mx-2 sm:mx-3 md:mx-4 flex-shrink-0" style={{ perspective: "1000px" }}>
       <motion.div
-        tabIndex={0}
-        onHoverStart={() => { setIsHovered(true); setRotation(360); }}
-        onHoverEnd={() => { setIsHovered(false); setRotation(0); }}
-        onTap={() => setRotation(r => r === 0 ? 360 : 0)}
+        suppressHydrationWarning
+        onMouseEnter={() => { setIsHovered(true); setRotation(360); }}
+        onMouseLeave={() => { setIsHovered(false); setRotation(0); }}
+        onClick={() => setRotation(r => r === 0 ? 360 : 0)}
         animate={{ scale: isHovered ? 1.05 : 1 }}
         transition={{ duration: 0.3 }}
         className="relative w-[140px] h-[140px] md:w-[170px] md:h-[170px] cursor-pointer z-20 group"
       >
         <motion.div
+          suppressHydrationWarning
           animate={{ rotateY: rotation }}
           transition={{ duration: 0.9, ease: "easeInOut" }}
           style={{ transformStyle: "preserve-3d" }}
-          className={`absolute inset-0 flex flex-col items-center justify-center p-4 md:p-5 border border-gray-800/80 bg-[#0a0a0f] rounded-2xl transition-[border-color,box-shadow,background-color] duration-500 overflow-hidden ${isHovered ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.15)]' : ''}`}
+          className={`absolute inset-0 flex flex-col items-center justify-center p-4 md:p-5 border border-gray-800/80 bg-[#0a0a0f] rounded-2xl transition-[border-color,box-shadow,background-color] duration-500 overflow-hidden${isHovered ? ' border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.15)]' : ''}`}
         >
           {/* Subtle hover background gradient like Services */}
           <div className={`absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
 
-          <div className={`relative z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-gray-900/80 rounded-full mb-3 md:mb-4 border border-gray-800 transition-all duration-500 ${isHovered ? 'scale-110 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-cyan-400/30' : ''}`}>
+          <div className={`relative z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-gray-900/80 rounded-full mb-3 md:mb-4 border border-gray-800 transition-all duration-500${isHovered ? ' scale-110 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-cyan-400/30' : ''}`}>
             <Icon className={`text-2xl md:text-3xl ${colorClass}`} />
           </div>
 

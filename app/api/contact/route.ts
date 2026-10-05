@@ -43,6 +43,7 @@ export async function POST(req: Request) {
         <p style="font-size: 16px; line-height: 1.5;">Thank you for reaching out! I have received your message and will get back to you as soon as possible.</p>
         
         <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #22d3ee;">
+          <p style="font-size: 14px; margin-top: 0; margin-bottom: 15px; color: #333333;"><strong>Selected Service:</strong> ${service || 'Not specified'}</p>
           <p style="font-size: 14px; margin-top: 0; color: #666666;">Your message:</p>
           <p style="font-size: 14px; line-height: 1.5; margin-bottom: 0;">${message.replace(/\n/g, '<br/>')}</p>
         </div>
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eeeeee; font-size: 12px; color: #888888;">
           <p style="margin: 5px 0;"><strong>Email:</strong> anujkumar.techdev@gmail.com</p>
           <p style="margin: 5px 0;"><strong>GitHub:</strong> <a href="https://github.com/Anujkr8674" style="color: #22d3ee; text-decoration: none;">github.com/Anujkr8674</a></p>
-          <p style="margin: 5px 0;"><strong>Portfolio:</strong> <a href="https://portfolio-pi-gold-85.vercel.app/" style="color: #22d3ee; text-decoration: none;">portfolio-flame-mu-94.vercel.app</a></p>
+          <p style="margin: 5px 0;"><strong>Portfolio:</strong> <a href="https://anuj-kumar-gray.vercel.app/" style="color: #22d3ee; text-decoration: none;">anuj-kumar-gray.vercel.app</a></p>
         </div>
       </div>
     `;
