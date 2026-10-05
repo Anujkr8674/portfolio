@@ -51,7 +51,7 @@ export default function Contact() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     let { name, value } = e.target;
-    
+
     if (name === 'phone') {
       value = value.replace(/\D/g, '');
       if (value.length > 10) return;
@@ -207,7 +207,7 @@ export default function Contact() {
                       className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-gray-200 focus:outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/10 transition-all appearance-none cursor-pointer"
                       style={{ backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 1rem center', backgroundSize: '1em' }}
                     >
-                      <option value="" disabled className="bg-[#0a0a12] text-gray-500">Select a service</option>
+                      <option value="" disabled className="bg-[#0a0a12] text-gray-500">Something in mind?</option>
                       <option value="Full Stack Web App" className="bg-[#0a0a12] text-gray-200">Full Stack Web App</option>
                       <option value="Frontend Development" className="bg-[#0a0a12] text-gray-200">Frontend Development</option>
                       <option value="Backend / API" className="bg-[#0a0a12] text-gray-200">Backend / API</option>
@@ -255,10 +255,10 @@ export default function Contact() {
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   className={`relative w-full max-w-sm overflow-hidden rounded-3xl border ${loading
-                      ? 'bg-[#0a0a0f] border-indigo-500/30 shadow-[0_0_40px_rgba(99,102,241,0.15)]'
-                      : status.type === 'success'
-                        ? 'bg-[#0a0a0f] border-green-500/30 shadow-[0_0_40px_rgba(34,197,94,0.15)]'
-                        : 'bg-[#0a0a0f] border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.15)]'
+                    ? 'bg-[#0a0a0f] border-indigo-500/30 shadow-[0_0_40px_rgba(99,102,241,0.15)]'
+                    : status.type === 'success'
+                      ? 'bg-[#0a0a0f] border-green-500/30 shadow-[0_0_40px_rgba(34,197,94,0.15)]'
+                      : 'bg-[#0a0a0f] border-red-500/30 shadow-[0_0_40px_rgba(239,68,68,0.15)]'
                     } p-8 text-center`}
                 >
                   <div className="flex justify-center mb-6">
@@ -288,8 +288,8 @@ export default function Contact() {
                     <button
                       onClick={() => setStatus({ type: null, message: '' })}
                       className={`w-full py-3 rounded-xl font-semibold transition-colors ${status.type === 'success'
-                          ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20 border border-green-500/30'
-                          : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30'
+                        ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20 border border-green-500/30'
+                        : 'bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30'
                         }`}
                     >
                       Close
