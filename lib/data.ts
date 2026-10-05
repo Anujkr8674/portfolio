@@ -5,7 +5,9 @@ export const PORTFOLIO_DATA = {
     name: "Anuj Kumar",
     role: "Full Stack Developer",
     location: "Ranchi, Jharkhand, India",
-    email: "[EMAIL_ADDRESS]",
+    email: "anujkumar.techdev@gmail.com",
+    github: "https://github.com/Anujkr8674/",
+    linkedin: "https://www.linkedin.com/in/anuj-kumar57/",
     about: "I’m a Full Stack Developer with 2+ years of experience building and deploying scalable, responsive web applications using React.js, Next.js, Node.js, Express.js, and PHP. I specialize in developing responsive frontends, robust backend APIs, database-driven applications, authentication, third-party integrations, and deployment. With a Master’s degree in Computer Applications, I combine strong technical knowledge with practical problem-solving to build reliable, high-quality digital solutions."
   },
   education: [

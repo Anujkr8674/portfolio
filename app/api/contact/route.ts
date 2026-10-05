@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eeeeee; font-size: 12px; color: #888888;">
           <p style="margin: 5px 0;"><strong>Email:</strong> anujkumar.techdev@gmail.com</p>
           <p style="margin: 5px 0;"><strong>GitHub:</strong> <a href="https://github.com/Anujkr8674" style="color: #22d3ee; text-decoration: none;">github.com/Anujkr8674</a></p>
-          <p style="margin: 5px 0;"><strong>Portfolio:</strong> <a href="https://portfolio-flame-mu-94.vercel.app/" style="color: #22d3ee; text-decoration: none;">portfolio-flame-mu-94.vercel.app</a></p>
+          <p style="margin: 5px 0;"><strong>Portfolio:</strong> <a href="https://portfolio-pi-gold-85.vercel.app/" style="color: #22d3ee; text-decoration: none;">portfolio-flame-mu-94.vercel.app</a></p>
         </div>
       </div>
     `;

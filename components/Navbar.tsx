@@ -171,6 +171,12 @@ export default function Navbar() {
                 </span>
                 <a href="https://github.com/Anujkr8674" target="_blank" rel="noreferrer" className="text-sm font-medium">github.com/Anujkr8674</a>
               </div>
+              <div className="flex items-center gap-4 text-gray-300 hover:text-white transition-colors">
+                <span className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>
+                </span>
+                <a href="https://www.linkedin.com/in/anuj-kumar57/" target="_blank" rel="noreferrer" className="text-sm font-medium">linkedin.com/in/anuj-kumar57</a>
+              </div>
             </motion.div>
           </motion.div>
         )}

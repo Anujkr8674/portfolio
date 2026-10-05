@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/lib/data";
 import {
@@ -92,50 +92,130 @@ const descMap: Record<string, string> = {
   "VPS": "Virtual Server",
 };
 
-const MarqueeRow = ({ items, reverse = false }: { items: any[], reverse?: boolean }) => {
+const SkillCard = ({ skill, desc, colorClass, Icon }: any) => {
+  const [rotation, setRotation] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="flex w-full overflow-hidden pause-on-hover py-4 relative">
+    <div className="mx-2 sm:mx-3 md:mx-4 flex-shrink-0" style={{ perspective: "1000px" }}>
+      <motion.div
+        tabIndex={0}
+        onHoverStart={() => { setIsHovered(true); setRotation(360); }}
+        onHoverEnd={() => { setIsHovered(false); setRotation(0); }}
+        onTap={() => setRotation(r => r === 0 ? 360 : 0)}
+        animate={{ scale: isHovered ? 1.05 : 1 }}
+        transition={{ duration: 0.3 }}
+        className="relative w-[140px] h-[140px] md:w-[170px] md:h-[170px] cursor-pointer z-20 group"
+      >
+        <motion.div
+          animate={{ rotateY: rotation }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
+          style={{ transformStyle: "preserve-3d" }}
+          className={`absolute inset-0 flex flex-col items-center justify-center p-4 md:p-5 border border-gray-800/80 bg-[#0a0a0f] rounded-2xl transition-[border-color,box-shadow,background-color] duration-500 overflow-hidden ${isHovered ? 'border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.15)]' : ''}`}
+        >
+          {/* Subtle hover background gradient like Services */}
+          <div className={`absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+
+          <div className={`relative z-10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-gray-900/80 rounded-full mb-3 md:mb-4 border border-gray-800 transition-all duration-500 ${isHovered ? 'scale-110 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.4)] border-cyan-400/30' : ''}`}>
+            <Icon className={`text-2xl md:text-3xl ${colorClass}`} />
+          </div>
+
+          <h3 className={`relative z-10 text-[13px] md:text-[15px] font-bold text-center leading-tight mb-1 transition-colors duration-300 font-space ${isHovered ? 'text-cyan-300' : 'text-white'}`}>
+            {skill.name}
+          </h3>
+          <span className={`relative z-10 text-[10px] md:text-xs font-medium text-center leading-snug transition-colors duration-300 ${isHovered ? 'text-gray-300' : 'text-gray-500'}`}>
+            {desc}
+          </span>
+          
+          {/* Animated bottom border line on hover like Services */}
+          <div className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 transition-all duration-500 ease-out ${isHovered ? 'w-full' : 'w-0'}`} />
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+const MarqueeRow = ({ items, reverse = false }: { items: any[], reverse?: boolean }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let animationId: number;
+    let lastTime = performance.now();
+    let accumulator = 0;
+    const velocity = reverse ? -0.7 : 0.7; // pixels per frame
+
+    // Pre-scroll to middle if reverse so we don't immediately hit 0
+    if (reverse) el.scrollLeft = el.scrollWidth / 2;
+
+    const scroll = (time: number) => {
+      const delta = time - lastTime;
+      lastTime = time;
+
+      if (!isPaused && el) {
+        accumulator += velocity * (delta / 16); 
+        
+        if (Math.abs(accumulator) >= 1) {
+          el.scrollLeft += Math.trunc(accumulator);
+          accumulator -= Math.trunc(accumulator);
+        }
+
+        const halfWidth = el.scrollWidth / 2;
+        if (!reverse && el.scrollLeft >= halfWidth) {
+          el.scrollLeft -= halfWidth;
+        } else if (reverse && el.scrollLeft <= 0) {
+          el.scrollLeft += halfWidth;
+        }
+      }
+      
+      animationId = requestAnimationFrame(scroll);
+    };
+
+    animationId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationId);
+  }, [isPaused, reverse]);
+
+  return (
+    <div 
+      className="flex w-full relative group"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+    >
       {/* Gradient Fades for edges */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0a0a0f] to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0a0a0f] to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-[#0a0a0f] to-transparent z-10 pointer-events-none"></div>
+      <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-[#0a0a0f] to-transparent z-10 pointer-events-none"></div>
 
-      <div className={`flex w-max ${reverse ? 'animate-marquee-reverse' : 'animate-marquee'}`}>
-        {[...items, ...items].map((skill, index) => {
-          const Icon = iconMap[skill.name] || SiJavascript;
-          const colorClass = colorMap[skill.name] || "text-cyan-400";
-          const desc = descMap[skill.name] || `${skill.level}% Mastery`;
+      {/* Auto/Manual Scroll Container */}
+      <div 
+        ref={scrollRef}
+        className="flex w-full overflow-x-auto py-8 px-4 sm:px-8"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <style dangerouslySetInnerHTML={{__html: `
+          ::-webkit-scrollbar { display: none; }
+        `}} />
+        <div className="flex w-max min-w-full">
+          {[...items, ...items].map((skill, index) => {
+            const Icon = iconMap[skill.name] || SiJavascript;
+            const colorClass = colorMap[skill.name] || "text-cyan-400";
+            const desc = descMap[skill.name] || `${skill.level}% Mastery`;
 
-          return (
-            <div key={`${skill.name}-${index}`} className="mx-3 md:mx-4 flex-shrink-0" style={{ perspective: "1000px" }}>
-              {/* Static wrapper catches hover and handles scaling */}
-              <motion.div
-                whileHover="hover"
-                variants={{ hover: { scale: 1.1 } }}
-                transition={{ duration: 0.3 }}
-                className="relative w-[150px] h-[150px] md:w-[170px] md:h-[170px] group cursor-default z-20"
-              >
-                {/* Inner card handles only the 3D rotation */}
-                <motion.div
-                  variants={{ hover: { rotateY: 360 } }}
-                  transition={{ duration: 0.9, ease: "easeInOut" }}
-                  style={{ transformStyle: "preserve-3d" }}
-                  className="absolute inset-0 flex flex-col items-center justify-center p-5 border border-white/5 bg-[#0e0e13] rounded-3xl group-hover:bg-[#15151e] group-hover:border-cyan-400 transition-colors duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.05)]"
-                >
-                  <div className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-black/60 rounded-2xl mb-4 group-hover:-translate-y-1 transition-transform duration-300 shadow-inner">
-                    <Icon className={`text-3xl md:text-4xl ${colorClass}`} />
-                  </div>
-
-                  <h3 className="text-white text-[14px] md:text-[15px] font-bold text-center leading-tight mb-1 transition-colors duration-300">
-                    {skill.name}
-                  </h3>
-                  <span className="text-gray-500 text-[11px] md:text-xs font-medium text-center leading-snug group-hover:text-gray-400 transition-colors duration-300">
-                    {desc}
-                  </span>
-                </motion.div>
-              </motion.div>
-            </div>
-          );
-        })}
+            return (
+              <SkillCard 
+                key={`${skill.name}-${index}`} 
+                skill={skill} 
+                desc={desc} 
+                colorClass={colorClass} 
+                Icon={Icon} 
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
