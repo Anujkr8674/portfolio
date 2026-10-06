@@ -6,15 +6,18 @@ import { Menu, X, ArrowRight, Mail, Phone } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
+   { label: "Skills", href: "#skills" },
+   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Skills", href: "#skills" },
+  
+ 
   { label: "Development Process", href: "#process" },
 ];
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -22,7 +25,32 @@ export default function Navbar() {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Intersection Observer for Active Section Highlighting
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -70% 0px" } // Triggers when the top 30% of a section hits the middle
+    );
+
+    // Give the DOM a tiny bit of time to render all sections
+    setTimeout(() => {
+      NAV_LINKS.forEach((link) => {
+        const id = link.href.substring(1);
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }, 100);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   // Lock body scroll when mobile menu is open
@@ -77,11 +105,30 @@ export default function Navbar() {
         </div>
 
         <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          {NAV_LINKS.map(link => (
-            <a key={link.label} href={link.href} className="relative text-sm text-white/60 hover:text-white transition-colors duration-200 py-1 whitespace-nowrap">
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map(link => {
+            const isActive = activeSection === link.href.substring(1);
+            return (
+              <a 
+                key={link.label} 
+                href={link.href} 
+                className={`relative text-sm transition-colors duration-200 py-1 whitespace-nowrap ${
+                  isActive 
+                    ? "text-[#1cd8d2] font-semibold" 
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                {link.label}
+                {/* Active Indicator Underline */}
+                {isActive && (
+                  <motion.div
+                    layoutId="navbar-active-indicator"
+                    className="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-[#1cd8d2] to-[#00bf8f]"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         <a href="#contact" className="hidden lg:flex items-center gap-2 group relative px-6 py-2.5 rounded-full font-bold text-sm text-white cursor-pointer border-2 border-[#1cd8d2] bg-transparent overflow-hidden hover:shadow-[0_0_20px_rgba(28,216,210,0.4)] transition-all hover:scale-105">
